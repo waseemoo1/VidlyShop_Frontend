@@ -18,6 +18,6 @@ const typeOfLike = (props) => {
 }
 
 // <i className="fa fa-heart-o" aria-hidden="true"></i>
-// <i class="fa fa-heart" aria-hidden="true"></i>
+// <i class="fa fa-heart" aria-hi dden="true"></i>
 
 export default Like;
