@@ -1,38 +1,38 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link, NavLink } from 'react-router-dom';
 
 const NavBar = () => {
   return (
-    <nav
-      style={{ margin: 10 }}
-      className="navbar navbar-expand-lg bg-light">
-      <Link to={'/'} className="navbar-brand">Vidly</Link>
-      <button
-        className='navbar-toggler'
-        type='button'
-        aria-controls='navbarNavAltMarkup'
-        aria-expanded="false"
-        aria-label='Toggle navigarion'
-      >
-        <span className='navbar-toggler-icon' />
-      </button>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+      <div class="container-fluid">
+        <Link to={'/'} className="navbar-brand">Vidly</Link>
 
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div className="navbar-nav">
-          <NavLink to={'/movies'} className="nav-item nav-link">
-            Movies
-          </NavLink>
-          <NavLink to={'/customers'} className="nav-item nav-link">
-            Customers
-          </NavLink>
-          <NavLink to={'/rentals'} className="nav-item nav-link">
-            Rentals
-          </NavLink>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExample03">
+          <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+
+            <li class="nav-item">
+              <NavLink to={'/movies'} className="nav-link" aria-current="page">
+                Movies
+              </NavLink>
+            </li>
+            <li class="nav-item">
+              <NavLink to={'/customers'} className="nav-link">
+                Customers
+              </NavLink>
+            </li>
+            <li class="nav-item">
+              <NavLink to={'/rentals'} className="nav-link">
+                Rentals
+              </NavLink>
+            </li>
+          </ul>
         </div>
       </div>
-
     </nav>
-  );
+  )
 }
 
 export default NavBar;
