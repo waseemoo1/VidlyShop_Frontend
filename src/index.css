@@ -1,10 +1,19 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  padding: 20px 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.navbar {
+  margin-bottom: 30px;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.clickable {
+  cursor: pointer;
+  color: rgb(35, 114, 162);
 }

@@ -7,8 +7,8 @@ const Pagination = ({ itemCount, pageSize, currentPage, onPageChange, onNextClic
 
   const pages = _.range(1, pagesCount + 1);
   return (
-    <nav aria-label="Page navigation example">
-      <ul className="pagination">
+    <nav className="bg-light" aria-label="Page navigation example" >
+      <ul className="pagination justify-content-center">
         <li
           onClick={onPervClick}
           style={{ padding: 0 }}
@@ -30,7 +30,7 @@ const Pagination = ({ itemCount, pageSize, currentPage, onPageChange, onNextClic
           className={currentPage === pagesCount ? "page-item btn disabled" : "page-item btn"}
         ><a className="page-link">Next</a></li>
       </ul>
-    </nav>
+    </nav >
   );
 }
 
