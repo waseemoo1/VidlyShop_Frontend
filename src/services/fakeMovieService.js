@@ -15,7 +15,7 @@ const movies = [
     title: "Die Hard",
     genre: { _id: "5b21ca3eeb7f6fbccd471818", name: "Action" },
     numberInStock: 5,
-    liked: false,
+    liked: true,
     dailyRentalRate: 2.5
   },
   {
@@ -23,7 +23,7 @@ const movies = [
     title: "Get Out",
     genre: { _id: "5b21ca3eeb7f6fbccd471820", name: "Thriller" },
     numberInStock: 8,
-    liked: false,
+    liked: true,
     dailyRentalRate: 3.5
   },
   {
@@ -86,15 +86,19 @@ export function getMovie(id) {
 
 export function saveMovie(movie) {
   let movieInDb = movies.find(m => m._id === movie._id) || {};
-  movieInDb.name = movie.name;
+
+  movieInDb.title = movie.title;
   movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genreId);
   movieInDb.numberInStock = movie.numberInStock;
   movieInDb.dailyRentalRate = movie.dailyRentalRate;
 
   if (!movieInDb._id) {
-    movieInDb._id = Date.now();
-    movies.push(movieInDb);
+    movieInDb._id = Date.now().toString();
+  } else {
+    deleteMovie(movieInDb._id)
   }
+
+  movies.push(movieInDb);
 
   return movieInDb;
 }
@@ -103,4 +107,9 @@ export function deleteMovie(id) {
   let movieInDb = movies.find(m => m._id === id);
   movies.splice(movies.indexOf(movieInDb), 1);
   return movieInDb;
+}
+
+export function movieSearch(query) {
+  const matchedMovies = movies.filter(m => m.title.toLowerCase().startsWith(query.toLowerCase()));
+  return matchedMovies;
 }

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { getMovies } from '../services/fakeMovieService';
+import { getMovies, deleteMovie } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
 import Pagination from './common/pagination';
-import { paginate } from '../utils/paginate';
+import { paginateFunc } from '../utils/paginate';
 import ListGroup from './common/listGroup';
 import MoviesTable from './moviesTable';
-import _ from 'lodash'
+import { Link } from 'react-router-dom';
+import SearchBox from './common/searchBox';
+import _, { curry } from 'lodash'
 
 class Movies extends Component {
 
@@ -14,7 +16,9 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
+    selectedGenre: null,
     sortColumn: { path: 'title', order: 'asc' },
+    searchQuery: ''
   };
 
   componentDidMount() {
@@ -27,19 +31,34 @@ class Movies extends Component {
       pageSize,
       currentPage,
       movies: allMovies,
-      selectedGenre,
-      sortColumn
     } = this.state;
 
-    const filtered = selectedGenre && selectedGenre._id
-      ? allMovies.filter(m => m.genre._id === selectedGenre._id)
-      : allMovies;
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
-
-    const movies = paginate(sorted, currentPage, pageSize);
+    const filtered = this.chooseFilterFunc()(allMovies);
+    const sorted = this.orderFunc()(filtered);
+    const movies = paginateFunc(currentPage, pageSize)(sorted);
 
     return { totalCount: filtered.length, data: movies }
+  }
+
+  merge = (f1, f2, f3) => (data) => f3(f2(f1(data)))
+
+  chooseFilterFunc = () => {
+    const { selectedGenre, searchQuery } = this.state;
+
+    if (searchQuery) return (allMovies) => allMovies.filter(m => m.title.toLowerCase().startsWith(searchQuery.toLowerCase()));
+    if (selectedGenre && selectedGenre._id) return (allMovies) => allMovies.filter(m => m.genre._id === selectedGenre._id);
+
+    return (allMovies) => allMovies;
+
+  }
+
+  orderFunc = () => {
+    const { sortColumn } = this.state;
+    return (data) => _.orderBy(data, [sortColumn.path], [sortColumn.order])
+  }
+
+  handleSearch = query => {
+    this.setState({ searchQuery: query, currentPage: 1, selectedGenre: null });
   }
 
   render() {
@@ -48,7 +67,8 @@ class Movies extends Component {
       pageSize,
       currentPage,
       genres,
-      sortColumn
+      sortColumn,
+      searchQuery
     } = this.state;
 
 
@@ -58,8 +78,9 @@ class Movies extends Component {
     const { totalCount, data: movies } = this.getPagedData();
 
     return (
-      <div style={{ margin: 5 }} className='row'>
-        <div className='col-2'>
+
+      <div style={{ margin: 5 }} className='row m-5'>
+        <div className='col-3 mx-auto'>
           <ListGroup
             items={genres}
             selectedItem={this.state.selectedGenre}
@@ -67,7 +88,15 @@ class Movies extends Component {
           />
         </div>
         <div className='col'>
+          <Link
+            className="btn btn-primary"
+            to={'/movies/new'}
+            role="button"
+            style={{ marginBottom: 20 }}
+          >New Movie
+          </Link>
           <p>Showing {totalCount} movies in the database</p>
+          <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
@@ -84,8 +113,10 @@ class Movies extends Component {
             onPervClick={this.handlePrevClick}
           />
         </div>
-
+        <div className='col-2'>
+        </div>
       </div>
+
     );
   }
 
@@ -99,6 +130,7 @@ class Movies extends Component {
 
   handleDelete = (movie) => {
     const movies = this.state.movies.filter(m => m._id !== movie._id)
+    deleteMovie(movie._id);
     this.setState({ movies })
   }
 
@@ -124,7 +156,7 @@ class Movies extends Component {
   }
 
   handleGenreSelect = (genre) => {
-    this.setState({ currentPage: 1, selectedGenre: genre });
+    this.setState({ currentPage: 1, selectedGenre: genre, searchQuery: '' });
   }
 
   handleSort = sortColumn => {

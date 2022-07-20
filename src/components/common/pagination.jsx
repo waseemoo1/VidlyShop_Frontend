@@ -1,5 +1,6 @@
 import _ from "lodash";
 import PropTypes from 'prop-types';
+import React from 'react';
 
 const Pagination = ({ itemCount, pageSize, currentPage, onPageChange, onNextClick, onPervClick }) => {
   const pagesCount = Math.ceil(itemCount / pageSize);
@@ -9,11 +10,15 @@ const Pagination = ({ itemCount, pageSize, currentPage, onPageChange, onNextClic
   return (
     <nav className="bg-light" aria-label="Page navigation example" >
       <ul className="pagination justify-content-center">
-        <li
-          onClick={onPervClick}
-          style={{ padding: 0 }}
-          className={currentPage === 1 ? "page-item btn disabled" : "page-item btn"}
-        ><a className="page-link">Previous</a></li>
+        {itemCount > pageSize &&
+          <li
+            onClick={onPervClick}
+            style={{ padding: 0 }}
+            className={currentPage === 1 ? "page-item btn disabled" : "page-item btn"}
+          ><a className="page-link">Previous</a>
+          </li>
+        }
+
         {
           pages.map(page =>
             <li
@@ -24,11 +29,15 @@ const Pagination = ({ itemCount, pageSize, currentPage, onPageChange, onNextClic
               <a className="page-link" onClick={() => onPageChange(page)}>{page}</a>
             </li>)
         }
-        <li
-          onClick={onNextClick}
-          style={{ padding: 0 }}
-          className={currentPage === pagesCount ? "page-item btn disabled" : "page-item btn"}
-        ><a className="page-link">Next</a></li>
+        {itemCount > pageSize &&
+          <li
+            onClick={onNextClick}
+            style={{ padding: 0 }}
+            className={currentPage === pagesCount ? "page-item btn disabled" : "page-item btn"}
+          ><a className="page-link">Next</a>
+          </li>
+        }
+
       </ul>
     </nav >
   );

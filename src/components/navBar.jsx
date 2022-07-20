@@ -3,31 +3,38 @@ import { Link, NavLink } from 'react-router-dom';
 
 const NavBar = () => {
   return (
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
-      <div class="container-fluid">
+    <nav style={{ margin: 0, padding: 5 }} className="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+      <div className="container-fluid">
         <Link to={'/'} className="navbar-brand">Vidly</Link>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarsExample03">
-          <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-
-            <li class="nav-item">
+        <div className="collapse navbar-collapse" id="navbarsExample03">
+          <ul className="navbar-nav me-auto mb-2 mb-sm-0">
+            <li className="nav-item">
               <NavLink to={'/movies'} className="nav-link" aria-current="page">
                 Movies
               </NavLink>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <NavLink to={'/customers'} className="nav-link">
                 Customers
               </NavLink>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <NavLink to={'/rentals'} className="nav-link">
                 Rentals
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to={'/login'} className="nav-link">
+                Login
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to={'/register'} className="nav-link">
+                Register
+              </NavLink>
+            </li>
+
           </ul>
         </div>
       </div>
